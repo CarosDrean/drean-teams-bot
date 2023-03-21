@@ -1,0 +1,46 @@
+  [
+    {
+      "name": "BAE Finanzas",
+      "score": 0
+    },
+    {
+      "name": "BAE Comercial",
+      "score": 100
+    },
+    {
+      "name": "BAE Supply",
+      "score": 0
+    },
+    {
+      "name": "Service Desk",
+      "score": 90
+    },
+    {
+      "name": "Operaciones SAP",
+      "score": 0
+    },
+    {
+      "name": "Procesos",
+      "score": 0
+    },
+    {
+      "name": "Ciberseguridad",
+      "score": 80
+    },
+    {
+      "name": "Testing",
+      "score": 50
+    },
+    {
+      "name": "Transición",
+      "score": 60
+    },
+    {
+      "name": "Arquitectura de Integración",
+      "score": 50
+    },
+    {
+      "name": "Big Data",
+      "score": 0
+    }
+  ]

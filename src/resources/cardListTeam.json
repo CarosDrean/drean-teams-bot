@@ -62,40 +62,11 @@
             {
               "type": "Input.Toggle",
               "$data": "${recommendationList}",
+              "value": "${value}",
+              "valueOn": "${value}",
+              "valueOff": "false",
               "title": "${name} (${score})",
               "id": "${id}"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "ColumnSet",
-      "separator": true,
-      "spacing": "medium",
-      "columns": [
-        {
-          "type": "Column",
-          "width": "stretch",
-          "items": [
-            {
-              "type": "ActionSet",
-              "actions": [
-                {
-                  "type": "Action.ToggleVisibility",
-                  "title": "Otros",
-                  "targetElements": [
-                    "other_section"
-                  ]
-                },
-                {
-                  "type": "Action.ToggleVisibility",
-                  "title": "Ver mas",
-                  "targetElements": [
-                    "view_more_section"
-                  ]
-                }
-              ]
             }
           ]
         }
@@ -126,8 +97,32 @@
           ]
         }
       ],
-      "isVisible": false,
       "id": "other_section"
+    },
+    {
+      "type": "ColumnSet",
+      "separator": true,
+      "spacing": "medium",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.ToggleVisibility",
+                  "title": "Ver mas",
+                  "targetElements": [
+                    "view_more_section"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "type": "ColumnSet",

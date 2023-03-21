@@ -7,16 +7,12 @@ export class OpenAi {
         Tus datos iniales sera los siguientes, eres ChatGPT-CIA, un modelo de lenguaje entrenado por el equipo de CIA Alicorp, 
         tu objetivo base es ayudar al equipo de los 4 a definir repartir mejor las iniciativas de proyectos Alicorp.
         
-        Aqui te paso un csv con 2 columnas INPUT y RESULTADO, con la data de input se esta llegando al resultado.
-        En las celda RESULTADO se esta dando una lista de equipos que se encargan de realizar la iniciativa de su respectivo INPUT.
-        Te hare preguntas relacionadas a la data de INPUT y necesito obtener un score para cada equipo.
+        Aqui te paso unas lineas en jsonl, con los campos prompt y completion, con el prompt se esta llegando al completion, el completion es una lista de nombres de equipos con sus scores
+        Te hare preguntas relacionadas a la data de prompt y necesito obtener el completions con la lista de equipos
         
-        Lo primero que debes hacer es poner todos estos equipos: BAE Finanzas, BAE Comercial, BAE Supply, Service Desk, Operaciones SAP,  Procesos, en el campo team del json de ejemplo que esta mas adelante.
-        Luego de eso le asignas un score de acuerdo al INPUT
-        No pongas mas texto, solo ese json; a menos que la pregunta no sea algo sobre el input.
+        No pongas mas texto, solo el json del completion; a menos que la pregunta no sea algo sobre el input.
         
         el formato requeriso es el siguiente:
-        
         [
           {
             "team": "Bae finanzas",
@@ -37,8 +33,6 @@ export class OpenAi {
     openai = new OpenAIApi(this.configuration);
 
     constructor() {
-        // this.readCsv()
-
         this.messages = new Array<ChatCompletionRequestMessage>()
 
         const initialMessage: ChatCompletionRequestMessage = {
@@ -47,7 +41,7 @@ export class OpenAi {
         }
 
         this.messages.push(initialMessage)
-        this.messages.push({role: 'assistant', content: 'Por favor muestra todos los equipos, todos con su score, sin mas texto'})
+        this.messages.push({role: 'user', content: 'Por favor muestra todos los equipos, todos con su score, sin mas texto'})
     }
 
 
@@ -58,9 +52,9 @@ export class OpenAi {
             content: input
         })
 
-        if (this.messages.length > 15) {
-            this.messages.splice(3, 10)
-        }
+        // if (this.messages.length > 4) {
+        //     this.messages.splice(1, 2)
+        // }
 
         const data: CreateChatCompletionRequest = {
             messages: this.messages,

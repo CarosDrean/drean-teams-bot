@@ -14,21 +14,31 @@ import {Team} from "./inertfaces/team";
 import CardSummary from "./resources/summaryCard.json";
 import CardCancel from "./resources/cancelCard.json";
 import NotImplementCard from "./resources/notImplementCard.json";
+import {OpenAiFineTuning} from "./openaidavinci";
 
 export class EchoBot extends ActivityHandler {
     openai: OpenAi
+    openaiFine: OpenAiFineTuning
     teams: Team[] = []
 
     constructor() {
         super();
         this.openai = new OpenAi()
+        this.openaiFine = new OpenAiFineTuning()
 
         this.onMessage(async (context, next) => {
-            const response = await this.openai.SendMessage(context.activity.text)
+            let response: string;
+            // if (context.activity.text.includes('solicitud')) {
+            //     response = await this.openaiFine.SendMessage(context.activity.text)
+            // } else {
+            response = await this.openai.SendMessage(context.activity.text)
+            // }
+            console.log(response)
 
             try {
                 const jsonList = JSON.parse(response)
                 console.log(jsonList)
+                this.openai = new OpenAi()
 
                 await context.sendActivity({attachments: [this.createAdaptiveCardListTeam(jsonList)]});
                 return
@@ -89,7 +99,7 @@ export class EchoBot extends ActivityHandler {
         return ActivityHandler.createInvokeResponse();
     }
 
-    private createSummaryCard(data: {[key: string]: string}) {
+    private createSummaryCard(data: { [key: string]: string }) {
         const selects: Team[] = [];
 
         for (const [key, value] of Object.entries(data)) {
@@ -119,6 +129,8 @@ export class EchoBot extends ActivityHandler {
     }
 
     private createAdaptiveCardListTeam(list: Team[]) {
+        console.log(CardListTeam)
+
         const recommendationList: Team[] = []
         const otherList: Team[] = []
         const viewMoreList: Team[] = []
@@ -128,6 +140,7 @@ export class EchoBot extends ActivityHandler {
             this.teams.push(team)
 
             if (team.score > 60) {
+                team.value = true
                 recommendationList.push(team)
                 return
             }
