@@ -51,7 +51,7 @@ export class EchoBot extends ActivityHandler {
 
         this.onMembersAdded(async (context, next) => {
             const membersAdded = context.activity.membersAdded;
-            const welcomeText = 'Hello and welcome!';
+            const welcomeText = 'Bienvenido!';
             for (const member of membersAdded) {
                 if (member.id !== context.activity.recipient.id) {
                     await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));

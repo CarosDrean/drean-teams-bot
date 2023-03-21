@@ -25,14 +25,14 @@
           "items": [
             {
               "type": "TextBlock",
-              "text": "Solicitud",
+              "text": "Solicitud de Iniciativa",
               "horizontalAlignment": "Right",
               "isSubtle": true,
               "wrap": true
             },
             {
               "type": "TextBlock",
-              "text": "Nueva Iniciativa",
+              "text": "Capacidades Identificadas",
               "horizontalAlignment": "Right",
               "spacing": "None",
               "size": "Large",

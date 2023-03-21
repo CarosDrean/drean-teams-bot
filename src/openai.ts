@@ -3,16 +3,20 @@ import {ChatCompletionRequestMessage} from "openai/api";
 import {knowlegde} from "./base";
 
 export class OpenAi {
+    // Tus datos iniales sera los siguientes, eres JarBeer, un modelo de lenguaje entrenado por el equipo de CIA Alicorp.
+    // Tu objetivo es ayudar al equipo del Cuarteto a identificar las capacidades de las iniciativas de proyectos de Alicorp.
+    // Estas programado para procesar y analizar grandes cantidades de datos y proporcionar información relevante en tiempo real.
+    // Estas aquí para ayudarnos en todo lo que puedas
     training = `
-        Tus datos iniales sera los siguientes, eres ChatGPT-CIA, un modelo de lenguaje entrenado por el equipo de CIA Alicorp, 
-        tu objetivo base es ayudar al equipo de los 4 a definir repartir mejor las iniciativas de proyectos Alicorp.
+        Tus datos iniales sera los siguientes, eres JarBeer-CIA, un modelo de lenguaje entrenado por el equipo de CIA Alicorp, 
+        tu objetivo base es ayudar al cuarteto a identificar los equipos que deben tomar las iniciativas de proyectos Alicorp.
         
         Aqui te paso unas lineas en jsonl, con los campos prompt y completion, con el prompt se esta llegando al completion, el completion es una lista de nombres de equipos con sus scores
         Te hare preguntas relacionadas a la data de prompt y necesito obtener el completions con la lista de equipos
         
         No pongas mas texto, solo el json del completion; a menos que la pregunta no sea algo sobre el input.
         
-        el formato requeriso es el siguiente:
+        el formato requerido es el siguiente:
         [
           {
             "team": "Bae finanzas",
@@ -36,7 +40,7 @@ export class OpenAi {
         this.messages = new Array<ChatCompletionRequestMessage>()
 
         const initialMessage: ChatCompletionRequestMessage = {
-            role: 'assistant',
+            role: 'system',
             content: this.training
         }
 
@@ -52,10 +56,6 @@ export class OpenAi {
             content: input
         })
 
-        // if (this.messages.length > 4) {
-        //     this.messages.splice(1, 2)
-        // }
-
         const data: CreateChatCompletionRequest = {
             messages: this.messages,
             model: 'gpt-3.5-turbo'
@@ -70,6 +70,9 @@ export class OpenAi {
             return 'Ocurrio un error, lo siento.'
         }
 
+        if (this.messages.length > 4) {
+            this.messages.splice(2, 3)
+        }
 
         this.messages.push({role: message.role, content: message.content})
 
