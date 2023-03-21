@@ -26,6 +26,7 @@ import { EchoBot } from './bot';
 // Create HTTP server.
 const server = restify.createServer();
 server.use(restify.plugins.bodyParser());
+console.log(`\nPort: ${process.env.port}`)
 server.listen(process.env.port || process.env.PORT || 3978, () => {
     console.log(`\n${server.name} listening to ${server.url}`);
     console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');

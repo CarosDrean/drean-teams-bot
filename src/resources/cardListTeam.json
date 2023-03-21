@@ -2,7 +2,6 @@
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.4",
-  "speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
   "body": [
     {
       "type": "ColumnSet",
@@ -64,7 +63,7 @@
               "$data": "${recommendationList}",
               "value": "${value}",
               "valueOn": "${value}",
-              "valueOff": "false",
+              "valueOff": "${value}",
               "title": "${name} (${score})",
               "id": "${id}"
             }

@@ -32,7 +32,7 @@
             },
             {
               "type": "TextBlock",
-              "text": "Aprovada",
+              "text": "Aprobada",
               "horizontalAlignment": "Right",
               "spacing": "None",
               "size": "Large",

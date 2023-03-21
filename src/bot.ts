@@ -35,6 +35,17 @@ export class EchoBot extends ActivityHandler {
             // }
             console.log(response)
 
+            if (response.includes('JSON:')) {
+                var re = new RegExp("JSON:(.*)\\n", "g");
+                var result = re.exec(response);
+                if (result && result[1]){
+                    console.log('after regex: ' + result[1]);
+                    this.openai = new OpenAi()
+                    await context.sendActivity({attachments: [this.createAdaptiveCardListTeam(JSON.parse(result[1]))]});
+                }
+                return;
+            }
+
             try {
                 const jsonList = JSON.parse(response)
                 console.log(jsonList)
@@ -54,7 +65,7 @@ export class EchoBot extends ActivityHandler {
             const welcomeText = 'Bienvenido!';
             for (const member of membersAdded) {
                 if (member.id !== context.activity.recipient.id) {
-                    await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
+                    //await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
                 }
             }
             // By calling next() you ensure that the next BotHandler is run.
