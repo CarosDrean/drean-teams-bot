@@ -8,24 +8,9 @@ export class OpenAi {
     // Estas programado para procesar y analizar grandes cantidades de datos y proporcionar información relevante en tiempo real.
     // Estas aquí para ayudarnos en todo lo que puedas
     training = `
-        Tus datos iniales sera los siguientes, eres JarBeer-CIA, un modelo de lenguaje entrenado por el equipo de CIA Alicorp, 
-        tu objetivo base es ayudar al cuarteto a identificar los equipos que deben tomar las iniciativas de proyectos Alicorp.
-        
-        Aqui te paso unas lineas en jsonl, con los campos prompt y completion, con el prompt se esta llegando al completion, el completion es una lista de nombres de equipos con sus scores
-        Te hare preguntas relacionadas a la data de prompt y necesito obtener el completions con la lista de equipos
-        
-        No pongas mas texto, solo el json del completion; a menos que la pregunta no sea algo sobre el input.
-        
-        el formato requerido es el siguiente:
-        [
-          {
-            "team": "Bae finanzas",
-            "score": 100
-          }
-        ]
-        
-        Aqui esta la data:
-        ${knowlegde}   
+Eres JarBeer, un modelo de lenguaje entrenado por el equipo de CIA Alicorp y asistente virtual del equipo "El Cuarteto", tu objetivo base es ayudar al cuarteto a identificar los equipos que deben participar en las iniciativas de proyectos de la empresa Alicorp. 
+Considera que los equipos que integran Alicorp son: BAE Finanzas, BAE Finanzas, BAE Comercial, BAE Supply Chain, Service Desk, Operaciones SAP, Procesos, Ciberseguridad, Testing, Transición, Arquitectura de Integración, Gestion y Accesos SAP, Big Data, Infraestructura y seguridad TI, BP Bolivia, Arquitectura de Datos.
+Cuando te cuenten una iniciativa responde una cadena JSON en una sola línea conteniendo como mínimo 10 equipos con los campos "name" con el nombre del equipo y el campo "score" con un puntaje de qué tan adecuado es el equipo para participar. La cadena en formato json no debe de estar indentada ni debe contener saltos de línea.  Cuando escribas en json la línea debe comenzar con la siguiente palabra: JSON. Por ejemplo JSON: [{"name": "Arquitectura de Datos", "score": 100}, {"name": "Big Data", "score": 91}]
     `
 
     messages: Array<ChatCompletionRequestMessage>
@@ -45,12 +30,10 @@ export class OpenAi {
         }
 
         this.messages.push(initialMessage)
-        this.messages.push({role: 'user', content: 'Por favor muestra todos los equipos, todos con su score, sin mas texto'})
     }
 
 
     async SendMessage(input: string): Promise<string> {
-        // return '[\n  {\n    "name": "BAE Comercial",\n    "score": 100\n  },\n  {\n    "name": "BAE Supply",\n    "score": 90\n  },\n  {\n    "name": "Service Desk",\n    "score": 80\n  },\n  {\n    "name": "Operaciones SAP",\n    "score": 80\n  },\n  {\n    "name": "Procesos",\n    "score": 70\n  },\n  {\n    "name": "Ciberseguridad",\n    "score": 50\n  },\n  {\n    "name": "Testing",\n    "score": 70\n  },\n  {\n    "name": "Transición",\n    "score": 50\n  },\n  {\n    "name": "Arquitectura de Integración",\n    "score": 50\n  }\n]'
         this.messages.push({
             role: 'user',
             content: input
@@ -58,21 +41,23 @@ export class OpenAi {
 
         const data: CreateChatCompletionRequest = {
             messages: this.messages,
-            model: 'gpt-3.5-turbo'
+            model: 'gpt-3.5-turbo',
+            temperature: 0.1
         }
 
         let message: any
         try {
             const response = await this.openai.createChatCompletion(data)
             message =response.data.choices[0].message
+            console.log('Respuesta rol: ' + message.role)
         } catch (e) {
             console.log(e)
             return 'Ocurrio un error, lo siento.'
         }
 
-        if (this.messages.length > 4) {
-            this.messages.splice(2, 3)
-        }
+        //if (this.messages.length > 4) {
+        //    this.messages.splice(2, 3)
+        //}
 
         this.messages.push({role: message.role, content: message.content})
 
