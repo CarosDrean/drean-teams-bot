@@ -1,0 +1,176 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.4",
+  "speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "Image",
+              "size": "Small",
+              "url": "https://adaptivecards.io/content/cats/1.png",
+              "altText": "Airplane"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Solicitud",
+              "horizontalAlignment": "Right",
+              "isSubtle": true,
+              "wrap": true
+            },
+            {
+              "type": "TextBlock",
+              "text": "Nueva Iniciativa",
+              "horizontalAlignment": "Right",
+              "spacing": "None",
+              "size": "Large",
+              "color": "Default",
+              "wrap": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "separator": true,
+      "spacing": "Medium",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Recomendados",
+              "isSubtle": true,
+              "weight": "Bolder",
+              "wrap": true
+            },
+            {
+              "type": "Input.Toggle",
+              "$data": "${recommendationList}",
+              "title": "${name} (${score})",
+              "id": "${id}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "separator": true,
+      "spacing": "medium",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.ToggleVisibility",
+                  "title": "Otros",
+                  "targetElements": [
+                    "other_section"
+                  ]
+                },
+                {
+                  "type": "Action.ToggleVisibility",
+                  "title": "Ver mas",
+                  "targetElements": [
+                    "view_more_section"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "separator": true,
+      "spacing": "Medium",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Otros",
+              "isSubtle": true,
+              "weight": "Bolder",
+              "wrap": true
+            },
+            {
+              "type": "Input.Toggle",
+              "$data": "${otherList}",
+              "title": "${name} (${score})",
+              "id": "${id}"
+            }
+          ]
+        }
+      ],
+      "isVisible": false,
+      "id": "other_section"
+    },
+    {
+      "type": "ColumnSet",
+      "separator": true,
+      "spacing": "Medium",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Ver Mas",
+              "isSubtle": true,
+              "weight": "Bolder",
+              "wrap": true
+            },
+            {
+              "type": "Input.Toggle",
+              "$data": "${viewMoreList}",
+              "title": "${name} (${score})",
+              "id": "${id}"
+            }
+          ]
+        }
+      ],
+      "isVisible": false,
+      "id": "view_more_section"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Execute",
+      "title": "Cancelar",
+      "verb": "cancelCard",
+      "associatedInputs": "none",
+      "style": "destructive"
+    },
+    {
+      "type": "Action.Execute",
+      "title": "Confirmar",
+      "verb": "summaryCard",
+      "style": "positive"
+    }
+  ]
+}
