@@ -62,7 +62,7 @@
             {
               "type": "TextBlock",
               "$data": "${selectedList}",
-              "text": "${name} (${score})"
+              "text": "${name}"
             }
           ]
         }

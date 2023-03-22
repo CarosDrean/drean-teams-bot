@@ -63,7 +63,6 @@
               "$data": "${recommendationList}",
               "value": "${value}",
               "valueOn": "${value}",
-              "valueOff": "${value}",
               "title": "${name} (${score})",
               "id": "${id}"
             }

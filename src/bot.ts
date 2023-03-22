@@ -5,7 +5,7 @@ import {
     ActivityHandler,
     MessageFactory,
     CardFactory,
-    InvokeResponse, Activity
+    InvokeResponse
 } from 'botbuilder';
 import {Template} from 'adaptivecards-templating'
 import {OpenAi} from "./openai";
@@ -27,6 +27,8 @@ export class EchoBot extends ActivityHandler {
         this.openaiFine = new OpenAiFineTuning()
 
         this.onMessage(async (context, next) => {
+            console.log(context.activity.text)
+
             let response: string;
             // if (context.activity.text.includes('solicitud')) {
             //     response = await this.openaiFine.SendMessage(context.activity.text)
@@ -35,27 +37,33 @@ export class EchoBot extends ActivityHandler {
             // }
             console.log(response)
 
-            if (response.includes('JSON:')) {
-                var re = new RegExp("JSON:(.*)\\n", "g");
-                var result = re.exec(response);
-                if (result && result[1]){
-                    console.log('after regex: ' + result[1]);
+            const jsonIndex = response.indexOf("JSON:");
+            if (jsonIndex !== -1) {
+                const jsonString = response.substring(jsonIndex + 5, response.lastIndexOf("]") + 1);
+                console.log(jsonString)
+
+                if (jsonString !== "") {
+                    await context.sendActivity({attachments: [this.createAdaptiveCardListTeam(JSON.parse(jsonString))]});
                     this.openai = new OpenAi()
-                    await context.sendActivity({attachments: [this.createAdaptiveCardListTeam(JSON.parse(result[1]))]});
+                } else {
+                    await context.sendActivity(MessageFactory.text(response, response));
                 }
-                return;
-            }
 
-            try {
-                const jsonList = JSON.parse(response)
-                console.log(jsonList)
-                this.openai = new OpenAi()
-
-                await context.sendActivity({attachments: [this.createAdaptiveCardListTeam(jsonList)]});
                 return
-            } catch (e) {
-                await context.sendActivity(MessageFactory.text(response, response));
             }
+
+            await context.sendActivity(MessageFactory.text(response, response));
+
+            // try {
+            //     const jsonList = JSON.parse(response)
+            //     console.log(jsonList)
+            //     this.openai = new OpenAi()
+            //
+            //     await context.sendActivity({attachments: [this.createAdaptiveCardListTeam(jsonList)]});
+            //     return
+            // } catch (e) {
+            //     await context.sendActivity(MessageFactory.text(response, response));
+            // }
 
             await next();
         });
@@ -111,11 +119,13 @@ export class EchoBot extends ActivityHandler {
     }
 
     private createSummaryCard(data: { [key: string]: string }) {
+        // console.log(CardSummary)
+
         const selects: Team[] = [];
 
         for (const [key, value] of Object.entries(data)) {
             this.teams.forEach((team) => {
-                if (team.id === key && value === 'true') {
+                if (team.id === key && (value.toLowerCase() === 'true')) {
                     selects.push(team)
                 }
             })
@@ -140,7 +150,7 @@ export class EchoBot extends ActivityHandler {
     }
 
     private createAdaptiveCardListTeam(list: Team[]) {
-        console.log(CardListTeam)
+        // console.log(CardListTeam)
 
         const recommendationList: Team[] = []
         const otherList: Team[] = []
